@@ -148,7 +148,10 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
     {setSender}
 ) => {
     return (
-        <button onClick={() => connectWallet(setSender)}>Connect Wallet</button>
+        <>
+            <h2>Connect Wallet &rarr;</h2>
+            <button onClick={() => connectWallet(setSender)}>Connect Wallet</button>
+        </>
     )
 }
 
@@ -174,15 +177,20 @@ const startStream = async (
     }
     console.log(data)
     const response = await initNativeTransaction(data);
-    setPda(response['data']['pda'])
-    console.log(`Streaming has started: ${JSON.stringify(response)}`)
+    if (response !== null && response['data'] !== null) {
+        setPda(response['data']['pda'])
+        console.log(`Streaming has started: ${JSON.stringify(response)}`)
+    }
 }
 
 const StartStream: FunctionComponent<StartStreamProps> = (
     {sender, receiver, setPda}
 ) => {
     return (
-        <button onClick={() => startStream(sender, receiver, setPda)}>Start streaming</button>
+        <>
+            <h2>Start Payment Stream &rarr;</h2>
+            <button onClick={() => startStream(sender, receiver, setPda)}>Start streaming</button>
+        </>
     )
 }
 
