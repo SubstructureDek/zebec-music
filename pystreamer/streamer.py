@@ -52,7 +52,7 @@ def stream():
             if lamports_received[sender_pubstr] < lamports_needed:
                 log.info(f"Insufficient funds ({lamports_received[sender_pubstr]})")
                 if last_withdrawal is None or time.time() - last_withdrawal > 10:
-                    log.info("Attempting withdrawal")
+                    log.info(f"Attempting withdrawal of {int(2*lamports_needed)} lamports")
                     try:
                         last_withdrawal = time.time()
                         zebec.withdrawNativeTransaction(
@@ -63,7 +63,7 @@ def stream():
                         )
                     except RPCException:
                         # insufficient funds
-                        log.info("Withdrawal failed")
+                        log.exception("Withdrawal failed")
                         fp = fp_invalid
                     else:
                         log.info("Withdrawal succeeded")
@@ -87,9 +87,9 @@ def stream():
     return Response(generator(), mimetype="audio/mpeg")
 
 
-@app.route("/")
-def player():
-    return send_from_directory("static", "index.html")
+# @app.route("/")
+# def player():
+#     return send_from_directory("static", "index.html")
 
 
 def setuplogging():
