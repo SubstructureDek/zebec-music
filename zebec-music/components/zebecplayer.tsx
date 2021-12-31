@@ -11,10 +11,10 @@ const ZebecPlayer: FunctionComponent<ZebecPlayerProps> = (
 ) => {
     return (
         <>
-        <audio controls preload="none">
-            <source src={`${url}?sender=${sender}&pda=${pda}`} type="audio/mpeg"/>
-        </audio>
-            </>
+            <audio controls preload="none">
+                <source src={`${url}?sender=${sender}&pda=${pda}`} type="audio/mpeg"/>
+            </audio>
+        </>
     )
 }
 

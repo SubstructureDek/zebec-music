@@ -31,8 +31,6 @@ def stream():
 
     sender_pubstr = request.args.get("sender")
     pda_pubstr = request.args.get("pda")
-    sender = PublicKey(sender_pubstr)
-    pda = PublicKey(pda_pubstr)
 
     def generator():
         log.info("Starting up generator")
@@ -54,6 +52,8 @@ def stream():
                 if last_withdrawal is None or time.time() - last_withdrawal > 10:
                     log.info(f"Attempting withdrawal of {int(2*lamports_needed)} lamports")
                     try:
+                        sender = PublicKey(sender_pubstr)
+                        pda = PublicKey(pda_pubstr)
                         last_withdrawal = time.time()
                         zebec.withdrawNativeTransaction(
                             sender,
@@ -61,6 +61,9 @@ def stream():
                             pda,
                             int(2*lamports_needed)
                         )
+                    except ValueError:
+                        log.exception("Couldn't parse keys")
+                        fp = fp_invalid
                     except RPCException:
                         # insufficient funds
                         log.exception("Withdrawal failed")
